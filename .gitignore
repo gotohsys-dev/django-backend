@@ -1,2 +1,8 @@
 # .gitignore に追加（.envをGitに上げない）
 .env
+
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
