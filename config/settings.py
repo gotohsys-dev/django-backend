@@ -27,9 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(dotenv_path=BASE_DIR / '.env.local')
 
 CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False") == "True"
-# CORS_ALLOWED_ORIGINS = [
-#     "https://dmm-affi-site.vercel.app"
-# ]
+# CORS_ALLOWED_ORIGINS = ["https://dmm-affi-site.vercel.app"]
 
 
 # Quick-start development settings - unsuitable for production
