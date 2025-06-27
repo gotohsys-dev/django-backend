@@ -15,15 +15,21 @@ import dj_database_url
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG") == "True"
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 # ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
-ALLOWED_HOSTS = ['django-backend-1-ikcz.onrender.com', '127.0.0.1'] # 必要であればローカル開発用も残しておく
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")# 必要であればローカル開発用も残しておく
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# .env.local（開発用）を読み込む
+load_dotenv(dotenv_path=BASE_DIR / '.env.local')
+
+CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False") == "True"
+# CORS_ALLOWED_ORIGINS = [
+#     "https://dmm-affi-site.vercel.app"
+# ]
 
 
 # Quick-start development settings - unsuitable for production
@@ -60,11 +66,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # 開発中だけ。将来的には限定推奨
-# CORS_ALLOWED_ORIGINS = [
-#     "https://dmm-affi-site.vercel.app"
-# ]
-
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -89,11 +90,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'default': dj_database_url.config(conn_max_age=600)
-    }
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
 }
 
 

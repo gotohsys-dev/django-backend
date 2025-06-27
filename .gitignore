@@ -1,8 +1,6 @@
 # .gitignore に追加（.envをGitに上げない）
-.env
+# *.env や .env* などの表現は、
+# **「拡張子や接尾辞を含む複数の .env ファイルを一括で対象にする」**ことを意味します。
+.env*
 
-# Python
 __pycache__/
-*.pyc
-*.pyd
-*.pyo
