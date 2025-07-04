@@ -120,6 +120,10 @@ class Product(models.Model):
     director = models.CharField(max_length=255, null=True, blank=True)
     author = models.CharField(max_length=255, null=True, blank=True)
 
+    #キャンペーン情報
+    campaign_date_begin = models.DateTimeField(null=True, blank=True)
+    campaign_date_end = models.DateTimeField(null=True, blank=True)
+
     # 管理用
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
