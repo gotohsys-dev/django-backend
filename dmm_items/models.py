@@ -68,6 +68,8 @@ class Product(models.Model):
     volume = models.IntegerField(null=True, blank=True)       # 収録時間（分）
     number = models.IntegerField(null=True, blank=True)       # 巻数
 
+    rank = models.IntegerField(null=True, blank=True)         # ランキング
+
     # レビュー
     review_count = models.IntegerField(default=0)
     review_average = models.FloatField(default=0.0)
@@ -123,6 +125,7 @@ class Product(models.Model):
     #キャンペーン情報
     campaign_date_begin = models.DateTimeField(null=True, blank=True)
     campaign_date_end = models.DateTimeField(null=True, blank=True)
+    campaign_title = models.CharField(max_length=255, null=True, blank=True)
 
     # 管理用
     created_at = models.DateTimeField(auto_now_add=True)

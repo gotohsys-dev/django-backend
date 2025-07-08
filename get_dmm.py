@@ -30,7 +30,7 @@ params = {
     "site": "FANZA",            # または DMM.R18
     "service": "digital",         # 動画: video / 電子書籍: book / 通販: mono など
     "hits": 100,                  # 1回の取得件数（最大100）
-    "sort": "date",               # 新しい順
+    "sort": "rank",               # ランキング順
     "offset": 1,                  # 最初の位置
     "output": "json",
     # "keyword": "倉多",        # 任意（キーワードで絞る）
@@ -125,11 +125,14 @@ def fetch_dmm_data():
             label_name = extract_first_name(item.get("iteminfo", {}).get("label"))
             maker_name = extract_first_name(item.get("iteminfo", {}).get("maker"))
             director_name = extract_first_name(item.get("iteminfo", {}).get("director"))
-            author_name = extract_first_name(item.get("iteminfo", {}).get("author"))        
+            author_name = extract_first_name(item.get("iteminfo", {}).get("author")) 
+            campaigns = item.get("campaign", [])
+            campaign = campaigns[0] if isinstance(campaigns, list) and campaigns else {}     
             
             product, created = Product.objects.update_or_create(
                 content_id=item.get("content_id"),
                 defaults={
+                    "rank": offset,
                     "product_id": item.get("product_id"),
                     "title": item.get("title"),
                     "volume": parse_volume(item.get("volume")),
@@ -172,6 +175,9 @@ def fetch_dmm_data():
                     "label": label_name,
                     "director": director_name,
                     "author": author_name,
+                    "campaign_date_begin": parse_date(campaign.get("date_begin", "")),
+                    "campaign_date_end": parse_date(campaign.get("date_end", "")),
+                    "campaign_title": campaign.get("title", "")
                 }
             )
 
