@@ -16,6 +16,7 @@ def random_products(request):
             "title": p.title,
             "image_url": p.image_url_large,
             "affiliate_url": p.affiliate_url,
+            "rank":p.rank,
         } for p in selected
     ]
     return Response(data)
@@ -32,6 +33,7 @@ def random_product(request):
         "title": p.title,
         "image_url": p.image_url_large,
         "affiliate_url": p.affiliate_url,
+        "rank":p.rank,
     }
 
     return Response(data)
