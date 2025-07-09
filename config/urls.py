@@ -22,4 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/products/random/", views.random_products),
     path("api/products/random-one/", views.random_product),
+    path("api/videos/random/", views.random_videos),
+    path("api/videos/random-one/", views.random_video),
 ]
