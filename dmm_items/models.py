@@ -88,8 +88,8 @@ class Product(models.Model):
     sample_image_large = models.URLField(null=True, blank=True)  # sampleImageURL.sample_l.image
 
     # サンプル動画
-    sample_movie_476 = models.URLField(null=True, blank=True)    # sampleMovieURL.size_476_306
-    sample_movie_560 = models.URLField(null=True, blank=True)    # sampleMovieURL.size_560_360
+    # sample_movie_476 = models.URLField(null=True, blank=True)    # sampleMovieURL.size_476_306
+    # sample_movie_560 = models.URLField(null=True, blank=True)    # sampleMovieURL.size_560_360
     sample_movie_644 = models.URLField(null=True, blank=True)    # sampleMovieURL.size_644_414
     sample_movie_720 = models.URLField(null=True, blank=True)    # sampleMovieURL.size_720_480
 

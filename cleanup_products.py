@@ -24,7 +24,8 @@ def cleanup_products():
         print(f"現在のProduct数: {total_count}")
 
         # 2. 削除する件数を計算（総数の半分）
-        limit = math.ceil(total_count / 2)
+        # limit = math.ceil(total_count / 2)
+        limit = 4901
         print(f"削除する件数: {limit}")
 
         # 3. 削除対象のIDを降順で取得
