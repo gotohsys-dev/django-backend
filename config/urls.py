@@ -24,4 +24,5 @@ urlpatterns = [
     path("api/products/random-one/", views.random_product),
     path("api/videos/random/", views.random_videos),
     path("api/videos/random-one/", views.random_video),
+    path("api/debug/", views.debug_product_stats),
 ]

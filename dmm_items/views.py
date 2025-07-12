@@ -85,3 +85,14 @@ def random_video(request):
     }
 
     return Response(data)
+
+@api_view(['GET'])
+def debug_product_stats(request):
+    total = Product.objects.count()
+    with_image = Product.objects.exclude(image_url_large='').count()
+    no_image = Product.objects.filter(image_url_large='').count()
+    return Response({
+        "total_products": total,
+        "with_image_url_large": with_image,
+        "no_image_url_large": no_image
+    })
