@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: dmm-affi-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    plan: free
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings
+      - key: SECRET_KEY
+        value: "your-secret-key-here"
+      - key: ALLOWED_HOSTS
+        value: "django-backend-1-ikcz.onrender.com"
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        sync: false
+    
+    postDeployCommand: "python manage.py migrate"
