@@ -55,14 +55,14 @@ from django.db import models
 
 class Product(models.Model):
     # 基本情報
-    service_code = models.CharField(max_length=50,null=True, blank=True)            # digital など
-    service_name = models.CharField(max_length=50,null=True, blank=True)            # 動画、書籍など
-    floor_code = models.CharField(max_length=50,null=True, blank=True)              # videoa など
-    floor_name = models.CharField(max_length=50,null=True, blank=True)              # ビデオ、同人など
-    category_name = models.CharField(max_length=100,null=True, blank=True)          # ビデオ (動画)、など
+    service_code = models.CharField(max_length=30,null=True, blank=True)            # digital など
+    service_name = models.CharField(max_length=30,null=True, blank=True)            # 動画、書籍など
+    floor_code = models.CharField(max_length=30,null=True, blank=True)              # videoa など
+    floor_name = models.CharField(max_length=30,null=True, blank=True)              # ビデオ、同人など
+    category_name = models.CharField(max_length=50,null=True, blank=True)          # ビデオ (動画)、など
 
-    content_id = models.CharField(max_length=50, unique=True) # 商品ID（例: 15dss00145）
-    product_id = models.CharField(max_length=50)              # 品番（例: 15dss00145dl）
+    content_id = models.CharField(max_length=30, unique=True) # 商品ID（例: 15dss00145）
+    product_id = models.CharField(max_length=30)              # 品番（例: 15dss00145dl）
     title = models.CharField(max_length=512)
 
     volume = models.IntegerField(null=True, blank=True)       # 収録時間（分）
@@ -98,8 +98,8 @@ class Product(models.Model):
     tachiyomi_affiliate_url = models.URLField(null=True, blank=True) # tachiyomi.affiliateURL
 
     # 価格・配信
-    price = models.CharField(max_length=50)                  # prices.price（例: 300〜）
-    delivery_type = models.CharField(max_length=50)          # delivery.type
+    price = models.CharField(max_length=20)                  # prices.price（例: 300〜）
+    delivery_type = models.CharField(max_length=20)          # delivery.type
     delivery_price = models.IntegerField(null=True, blank=True) # delivery.price
 
     # 対応端末
