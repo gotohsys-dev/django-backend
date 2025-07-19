@@ -63,7 +63,7 @@ class Product(models.Model):
 
     content_id = models.CharField(max_length=30, unique=True) # 商品ID（例: 15dss00145）
     product_id = models.CharField(max_length=30)              # 品番（例: 15dss00145dl）
-    title = models.CharField(max_length=512)
+    title = models.CharField(max_length=200)
 
     volume = models.IntegerField(null=True, blank=True)       # 収録時間（分）
     number = models.IntegerField(null=True, blank=True)       # 巻数
@@ -116,16 +116,16 @@ class Product(models.Model):
     actresses = models.TextField(null=True, blank=True)
     # genres = models.ManyToManyField(Genre, blank=True)
     # actresses = models.ManyToManyField(Actress, blank=True)
-    maker = models.CharField(max_length=255, null=True, blank=True)
-    series = models.CharField(max_length=255, null=True, blank=True)
-    label = models.CharField(max_length=255, null=True, blank=True)
-    director = models.CharField(max_length=255, null=True, blank=True)
-    author = models.CharField(max_length=255, null=True, blank=True)
+    maker = models.CharField(max_length=50, null=True, blank=True)
+    series = models.CharField(max_length=50, null=True, blank=True)
+    label = models.CharField(max_length=100, null=True, blank=True)
+    director = models.CharField(max_length=100, null=True, blank=True)
+    author = models.CharField(max_length=200, null=True, blank=True)
 
     #キャンペーン情報
     campaign_date_begin = models.DateTimeField(null=True, blank=True)
     campaign_date_end = models.DateTimeField(null=True, blank=True)
-    campaign_title = models.CharField(max_length=255, null=True, blank=True)
+    campaign_title = models.CharField(max_length=100, null=True, blank=True)
 
     # 管理用
     created_at = models.DateTimeField(auto_now_add=True)
