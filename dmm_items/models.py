@@ -63,7 +63,7 @@ class Product(models.Model):
 
     content_id = models.CharField(max_length=30, unique=True) # 商品ID（例: 15dss00145）
     product_id = models.CharField(max_length=30)              # 品番（例: 15dss00145dl）
-    title = models.CharField(max_length=200)
+    title = models.TextField(null=True, blank=True)
 
     volume = models.IntegerField(null=True, blank=True)       # 収録時間（分）
     number = models.IntegerField(null=True, blank=True)       # 巻数
@@ -84,8 +84,8 @@ class Product(models.Model):
     image_url_large = models.URLField(null=True, blank=True)  # imageURL.large
 
     # サンプル画像
-    sample_image_small = models.URLField(null=True, blank=True)  # sampleImageURL.sample_s.image
-    sample_image_large = models.URLField(null=True, blank=True)  # sampleImageURL.sample_l.image
+    # sample_image_small = models.URLField(null=True, blank=True)  # sampleImageURL.sample_s.image
+    # sample_image_large = models.URLField(null=True, blank=True)  # sampleImageURL.sample_l.image
 
     # サンプル動画
     sample_movie_476 = models.URLField(null=True, blank=True)    # sampleMovieURL.size_476_306
@@ -117,10 +117,10 @@ class Product(models.Model):
     # genres = models.ManyToManyField(Genre, blank=True)
     # actresses = models.ManyToManyField(Actress, blank=True)
     maker = models.CharField(max_length=50, null=True, blank=True)
-    series = models.CharField(max_length=50, null=True, blank=True)
+    series = models.TextField(null=True, blank=True)
     label = models.CharField(max_length=100, null=True, blank=True)
     director = models.CharField(max_length=100, null=True, blank=True)
-    author = models.CharField(max_length=200, null=True, blank=True)
+    author = models.CharField(max_length=255, null=True, blank=True)
 
     #キャンペーン情報
     campaign_date_begin = models.DateTimeField(null=True, blank=True)

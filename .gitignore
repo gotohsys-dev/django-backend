@@ -3,5 +3,6 @@
 # **「拡張子や接尾辞を含む複数の .env ファイルを一括で対象にする」**ことを意味します。
 .env*
 data.json
+db.sqlite3
 
 __pycache__/
