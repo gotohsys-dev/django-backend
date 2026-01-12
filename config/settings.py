@@ -15,29 +15,30 @@ import dj_database_url
 import os
 from dotenv import load_dotenv
 
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
-DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")
-
-# Render.com で実行されている場合、自動的にホスト名を追加
-if os.getenv('RENDER'):
-    render_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME')
-    if render_hostname:
-        ALLOWED_HOSTS.append(render_hostname)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # .env.local（開発用）を読み込む
 load_dotenv(dotenv_path=BASE_DIR / '.env.local')
 
-CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False") == "True"
-CORS_ALLOWED_ORIGINS = ["https://dmm-affi-site.vercel.app"]
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv("SECRET_KEY", 'django-insecure-cpvh556ep==@v8@jke8&8gw@rb0iv*e9c@kbq+*&v=#q!xc8=m')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+# Renderでは 'RENDER' 環境変数が 'true' に設定されるため、これを使って本番環境を判定します
+DEBUG = os.getenv('RENDER') != 'true'
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False") == "True"
+CORS_ALLOWED_ORIGINS = ["https://dmm-affi-site.vercel.app"]
 
 # Application definition
 
@@ -87,19 +88,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': dj_database_url.config(default='sqlite:///db.sqlite3')
-# }
-
 DATABASES = {
-    'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'dmm_db'),
-            'USER': os.getenv('DB_USER', 'yutaka'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST'),
-            'PORT': os.getenv('DB_PORT', '5552'),
-    }   
+    'default': dj_database_url.config(
+        # DATABASE_URL 環境変数が設定されていない場合のフォールバック (ローカル開発用)
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600,
+        # 本番環境(DEBUG=False)ではSSL接続を要求します
+        ssl_require=not DEBUG
+    )
 }
 
 
