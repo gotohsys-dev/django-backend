@@ -4,7 +4,7 @@ on:
   schedule:
     # 14分ごとに実行 (Renderの15分スリープを回避)
     - cron: '*/14 * * * *'
-  workflow_dispatch: # 手動実行も可能にする
+  workflow_dispatch: # 手動実行も可能にする。
 
 jobs:
   ping:
