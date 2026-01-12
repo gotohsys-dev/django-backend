@@ -19,6 +19,12 @@ SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")
 
+# Render.com で実行されている場合、自動的にホスト名を追加
+if os.getenv('RENDER'):
+    render_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+    if render_hostname:
+        ALLOWED_HOSTS.append(render_hostname)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
