@@ -9,16 +9,16 @@ import django
 from dotenv import load_dotenv
 from django.utils import timezone
 from datetime import datetime
+from pathlib import Path
     
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')  # プロジェクト名に合わせる
 django.setup()
 
 from dmm_items.models import Product, Genre, Actress, Series, Maker, Label, Director, Author
 
-Product.objects.all().delete() # 全データ削除
-
 # --- API基本情報 ---
-load_dotenv()
+env_path = Path(__file__).resolve().parent / '.env' if (Path(__file__).resolve().parent / '.env').exists() else Path(__file__).resolve().parent / '.env.local'
+load_dotenv(dotenv_path=env_path)
 API_URL = "https://api.dmm.com/affiliate/v3/ItemList"
 API_ID = os.getenv("DMM_API_ID")
 AFFILIATE_ID = os.getenv("DMM_AFFILIATE_ID")
@@ -78,10 +78,10 @@ def fetch_dmm_data():
     total_results = None
     all_fetched = 0
 
-    # すでに登録されている商品の数を取得してoffsetに設定
-    offset = Product.objects.count() + 1
-    print(f"すでに保存されている件数: {offset - 1}")
-    print(f"{offset}件目から取得を開始します。")
+    # 全削除しない場合、最新のランキング順に取得するため offset 1 から開始します
+    # update_or_create により、既存データは更新され、新着は追加されます
+    offset = 1
+    print(f"取得を開始します（既存データは更新されます）。")
 
     while True:
         params["offset"] = offset

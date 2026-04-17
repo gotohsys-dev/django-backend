@@ -18,9 +18,9 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# .env.local（開発用）を読み込む
-load_dotenv(dotenv_path=BASE_DIR / '.env.local')
-
+# 本番環境では .env を優先的に読み込むように調整
+env_path = BASE_DIR / '.env' if (BASE_DIR / '.env').exists() else BASE_DIR / '.env.local'
+load_dotenv(dotenv_path=env_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -30,14 +30,18 @@ SECRET_KEY = os.getenv("SECRET_KEY", 'django-insecure-cpvh556ep==@v8@jke8&8gw@rb
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Renderでは 'RENDER' 環境変数が 'true' に設定されるため、これを使って本番環境を判定します
-DEBUG = os.getenv('RENDER') != 'true'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# UbuntuサーバーのIPアドレスやドメイン名をここに追加してください
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+
+# Nginx/Cloudflare経由のHTTPS通信を正しく処理するための設定
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# あなたのドメイン名（例: https://api.yourdomain.com）を環境変数から読み込む
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "https://dmm.gotohsys.com,https://*.vercel.app").split(",")
 
 CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False") == "True"
+# フロントエンドがVercelにあるならそのままでOKですが、必要に応じて追加します
 CORS_ALLOWED_ORIGINS = ["https://dmm-affi-site.vercel.app"]
 
 # Application definition
@@ -90,11 +94,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        # DATABASE_URL 環境変数が設定されていない場合のフォールバック (ローカル開発用)
+        # Docker Compose を使う場合、DATABASE_URL=postgres://django_user:your_password@db:5432/dmm_db を設定します
         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
         conn_max_age=600,
-        # 本番環境(DEBUG=False)ではSSL接続を要求します
-        ssl_require=not DEBUG
+        # 自前サーバー内で通信する場合は通常SSLは不要です。必要なら環境変数で制御します
+        ssl_require=os.getenv('DATABASE_SSL', 'False') == 'True'
     )
 }
 
@@ -135,6 +139,7 @@ USE_TZ = True  # タイムゾーンを有効にする
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
